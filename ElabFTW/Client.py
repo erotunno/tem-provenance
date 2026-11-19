@@ -92,6 +92,17 @@ class ElabFTWAPI:
         for template in self.get_experiment_templates():
             print(f"ID: {template['id']:>4} | Title: {template['title']}")
 
+    def get_resource_templates(self, **filters):
+        return self._json("GET", "/items_types", params=filters)
+
+    def get_resource_template(self, template_id):
+        return self._json("GET", f"/items_types/{self._id(template_id)}")
+
+    def create_resource_template(self, data):
+        """Create a resource template and return its numeric ID."""
+        with self._request("POST", "/items_types", json=self._editable(data)) as response:
+            return self._created_id(response)
+
     def get_experiment_tags(self, experiment_id):
         return self._json("GET", self._entity_path("experiments", experiment_id) + "/tags")
 
