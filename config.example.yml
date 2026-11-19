@@ -4,8 +4,10 @@ elabftw:
   api_key: null  # Or set ELABFTW_API_KEY in the environment.
 
 nomad:
+  # The Oasis API URL, including its deployment prefix and /api/v1.
   base_url: null
   api_key: null  # Or set NOMAD_API_KEY in the environment.
+  playground_upload_id: null
 
 data:
   # Absolute root folder as seen by the workstation.

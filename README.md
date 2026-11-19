@@ -29,7 +29,7 @@ cp -n config.example.yml config.yml
 chmod 600 config.yml
 ```
 
-Fill in `elabftw.base_url` and `elabftw.api_key` for eLabFTW reads. You can supply the key through `ELABFTW_API_KEY` instead. Set `data.folder` to the acquisition storage root as seen by the runner when needed. The `nomad` section is reserved for the future Oasis connection. Keep live values in the ignored `config.yml`.
+Fill in `elabftw.base_url` and `elabftw.api_key` for eLabFTW reads. You can supply the key through `ELABFTW_API_KEY` instead. Set `data.folder` to the acquisition storage root as seen by the runner when needed. The `nomad` section configures the Oasis connection when it is available. Keep live values in the ignored `config.yml`.
 
 ## Read-only client check
 
@@ -65,3 +65,25 @@ The EM reader combines the acquisition data and embedded metadata with recognize
 For additional NXem destinations outside the stock YAML mapping, a small project reader can extend the EM reader and add explicit fields before validation and writing. A workstation test confirmed that one NeXus file can contain an image stack and voltage from a public Velox file, synthetic specimen and timing fields from YAML, and an instrument location from a separate JSON source. Use `--fail` for production exports so invalid required fields stop the write. The public test fixture is missing a required stage rotation.
 
 Convert and validate on the workstation, then upload the resulting file through the NOMAD API once Oasis is available. [Standalone EM converter](https://fairmat-nfdi.github.io/pynxtools-em/tutorial/standalone.html) · [ELN field mapping](https://github.com/FAIRmat-NFDI/pynxtools-em/blob/v0.4.6/src/pynxtools_em/configurations/oasis_eln_cfg.py) · [NOMAD API upload](https://fairmat-nfdi.github.io/pynxtools/how-tos/pynxtools/use-with-nomad.html)
+
+## Upload to NOMAD
+
+Set `nomad.base_url` to the Oasis API URL, such as `https://oasis.example.org/api/v1`. Set `nomad.api_key` in `config.yml` or supply the raw bearer token through `NOMAD_API_KEY`. On NOMAD deployments with personal access token scopes, use `uploads:read` and `uploads:write` for this workflow.
+
+Once the NeXus file has passed validation, use the client from the project root.
+
+```python
+from NOMAD.Client import NOMADAPI
+
+with NOMADAPI.from_config() as client:
+    upload_id = client.create_upload("session.nxs", name="MatCommon TEM session")
+    print("NOMAD upload", upload_id)
+    upload = client.wait_for_processing(upload_id)
+    entries = client.list_entries(upload_id)
+    print(upload["process_status"], entries["pagination"]["total"], "entries")
+    print("Failed entries", entries.get("processing_failed"))
+```
+
+The upload stays unpublished. Save the upload ID as soon as it is returned so processing can be checked again after a timeout. Inspect the entry count and the failed-entry count, since a completed upload can contain entries that failed to parse. Pass `pagination.next_page_after_value` back as `page_after_value` to get the next page. Use `get_entry_archive(entry_id)` to read a processed entry.
+
+[NOMAD API definition](https://nomad-lab.eu/backend/api/v1/extensions/docs) · [NOMAD Python upload guide](https://docs.nomad-lab.eu/howto/manage/program/publish_python.html)
