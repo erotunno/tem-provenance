@@ -1,0 +1,12 @@
+elabftw:
+  # Workstation-accessible server URL, optionally ending in /api/v2.
+  base_url: null
+  api_key: null  # Or set ELABFTW_API_KEY in the environment.
+
+nomad:
+  base_url: null
+  api_key: null  # Or set NOMAD_API_KEY in the environment.
+
+data:
+  # Absolute root folder as seen by the workstation.
+  folder: null
