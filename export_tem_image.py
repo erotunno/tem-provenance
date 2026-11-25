@@ -58,6 +58,14 @@ def read_session(session_id):
         return session, fields, sample, specimen, microscope
 
 
+def owner_sample_id(specimen):
+    for field in ("Sample_id", "sample_id", "identifier"):
+        value = specimen.get(field)
+        if value is not None and (identifier := str(value).strip()) and identifier.casefold() != "none":
+            return identifier
+    return None
+
+
 def material_components(sample):
     raw = sample.get("metadata")
     metadata = json.loads(raw) if isinstance(raw, str) else raw
@@ -139,7 +147,10 @@ def notebook_data(session, fields, sample, specimen, microscope, acquired, zone,
         f"and microscope resource #{microscope['id']} ({microscope['title']}).",
         f"Embedded Velox acquisition timestamp: {utc_text(acquired)}.",
     ]
-    if acquired < start or (end is not None and acquired > end) or acquired.astimezone(zone).date() != start.astimezone(zone).date():
+    acquisition_in_session = acquired >= start and (
+        acquired <= end if end is not None else acquired.astimezone(zone).date() == start.astimezone(zone).date()
+    )
+    if not acquisition_in_session:
         notes.append("The file timestamp is outside the notebook session. Specimen attribution for this image is unverified.")
 
     sample_data = {"name": sample["title"], "is_simulation": False}
@@ -163,8 +174,9 @@ def notebook_data(session, fields, sample, specimen, microscope, acquired, zone,
             notes.append(f"Sample preparation: noon local time assumed for the date-only record {prepared}.")
             prepared += "T12:00"
         sample_data["preparation_date"] = utc_text(facility_time(prepared, zone))
-    entry["experiment_description"] = " ".join(notes)
-    return {"entry": entry, "sample": sample_data}
+    description = (fields.get("experiment_description") or "").strip()
+    entry["experiment_description"] = "\n\n".join(filter(None, (description, " ".join(notes))))
+    return {"entry": entry, "sample": sample_data}, acquisition_in_session
 
 
 def verify_image(path):
@@ -218,7 +230,7 @@ def main():
     if any(name == "substrate_formula" for name, _, _ in components):
         # Only use the legacy substrate mapping for fields outside Materials.
         specimen.pop("substrate_formula", None)
-    metadata = notebook_data(
+    metadata, acquisition_in_session = notebook_data(
         session, fields, sample, specimen, microscope, acquired, zone, components=components
     )
     print(metadata["entry"]["experiment_description"], flush=True)
@@ -241,6 +253,10 @@ def main():
             sample_physical_form=specimen.get("physical_form"),
             sample_support=(specimen.get("Support") or "").strip(),
             sample_parent_identifier=specimen.get("identifier_parent"),
+            experiment_identifier=session.get("elabid"),
+            sample_identifier=sample.get("elabid"),
+            sample_owner_identifier=owner_sample_id(specimen),
+            link_event_to_sample=acquisition_in_session,
         )
         shape = verify_image(generated)
         # Install the complete result without overwriting a previous conversion.

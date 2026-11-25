@@ -1,2 +1,6 @@
 requests==2.34.2
 PyYAML==6.0.3
+ase==3.29.0
+h5py==3.16.0
+pynxtools==0.16.0
+pynxtools-em==0.4.6

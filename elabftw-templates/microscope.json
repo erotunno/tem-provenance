@@ -1,0 +1,184 @@
+{
+  "elabftw": {
+    "extra_fields_groups": [
+      {
+        "id": 1,
+        "name": "fabrication"
+      },
+      {
+        "id": 2,
+        "name": "electron_source"
+      },
+      {
+        "id": 3,
+        "name": "Objective Lens"
+      },
+      {
+        "id": 4,
+        "name": "Corrector_CS"
+      },
+      {
+        "id": 5,
+        "name": "Corrector_CC"
+      },
+      {
+        "id": 6,
+        "name": "Monochromator"
+      }
+    ]
+  },
+  "extra_fields": {
+    "type": {
+      "type": "text",
+      "value": "",
+      "group_id": 3
+    },
+    "Model": {
+      "type": "text",
+      "value": "",
+      "group_id": 4,
+      "position": 1
+    },
+    "model": {
+      "type": "text",
+      "value": "",
+      "group_id": 1,
+      "position": 1,
+      "description": "Version or model of the component named by the manufacturer."
+    },
+    "probe": {
+      "type": "text",
+      "value": "electron",
+      "group_id": 2,
+      "readonly": true,
+      "description": "Type of radiation"
+    },
+    "vendor": {
+      "type": "text",
+      "value": "",
+      "group_id": 1,
+      "position": 0,
+      "description": "Company name of the manufacturer."
+    },
+    "voltage": {
+      "type": "select",
+      "value": "",
+      "options": [
+        "30 kV",
+        "40 kV",
+        "60 kV",
+        "80 kV",
+        "120 kV",
+        "200 kV",
+        "300 kV"
+      ],
+      "group_id": 2,
+      "allow_multi_values": true
+    },
+    "Model_CC": {
+      "type": "text",
+      "value": "",
+      "group_id": 5,
+      "position": 1
+    },
+    "capability": {
+      "type": "select",
+      "value": "",
+      "options": [
+        "STEM",
+        "EELS",
+        "Holography",
+        "EDXS",
+        "iDPC/DPC"
+      ],
+      "group_id": 1,
+      "position": 2,
+      "description": "Free-text list with eventually multiple terms of functionalities which the component offers.",
+      "allow_multi_values": true
+    },
+    "identifier": {
+      "type": "text",
+      "value": "",
+      "group_id": 1,
+      "position": 4,
+      "description": "Ideally, a (globally) unique persistent identifier, link, or text to a resource which gives further details."
+    },
+    "CC_corrected": {
+      "type": "radio",
+      "value": "Yes",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "group_id": 5,
+      "position": 0,
+      "description": "Has the microscope a chromatic aberration corrector?"
+    },
+    "Cs_corrected": {
+      "type": "radio",
+      "value": "Yes",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "group_id": 4,
+      "position": 0,
+      "description": "Is the microscope Cs corrected?"
+    },
+    "emitter_type": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "description": "Emitter type used to create the beam."
+    },
+    "Monochromated": {
+      "type": "radio",
+      "value": "Yes",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "group_id": 6,
+      "description": "Is the microscope monochromated?"
+    },
+    "Pole_piece_gap": {
+      "type": "number",
+      "unit": "mm",
+      "units": [
+        "mm"
+      ],
+      "value": "",
+      "group_id": 3,
+      "description": "Dimension of the gap between pole pieces."
+    },
+    "emitter_material": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "description": "Material of which the emitter is build, e.g. the filament material."
+    },
+    "construction_year": {
+      "type": "date",
+      "value": "",
+      "group_id": 1,
+      "position": 3,
+      "description": "Datetime of components initial construction."
+    },
+    "Model_monochromator": {
+      "type": "text",
+      "value": "",
+      "group_id": 6
+    },
+    "incident_energy_spread": {
+      "type": "number",
+      "unit": "eV",
+      "units": [
+        "eV",
+        "meV"
+      ],
+      "value": "",
+      "group_id": 2,
+      "description": "The energy spread FWHM for the corresponding energy(ies) in incident_energy. "
+    }
+  }
+}

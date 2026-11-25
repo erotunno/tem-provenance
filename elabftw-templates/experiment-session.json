@@ -1,0 +1,119 @@
+{
+  "elabftw": {
+    "extra_fields_groups": [
+      {
+        "id": 1,
+        "name": "Sample and microscope"
+      },
+      {
+        "id": 2,
+        "name": "Session Info"
+      },
+      {
+        "id": 3,
+        "name": "DATA INFO"
+      }
+    ]
+  },
+  "extra_fields": {
+    "Path": {
+      "type": "text",
+      "value": "",
+      "group_id": 3,
+      "position": 0,
+      "required": true,
+      "description": "Path or URL to the folder containing the acquired data."
+    },
+    "Sample": {
+      "type": "items",
+      "value": "",
+      "group_id": 1,
+      "position": 0,
+      "required": true,
+      "description": "Select the one sample resource measured in this session."
+    },
+    "voltage": {
+      "type": "number",
+      "unit": "kV",
+      "units": [
+        "kV"
+      ],
+      "value": "",
+      "group_id": 2,
+      "position": 3,
+      "description": "Actual TEM accelerating voltage in kV when a single setting is known for the session. Use acquisition metadata for per-file values."
+    },
+    "end_time": {
+      "type": "datetime-local",
+      "value": "",
+      "group_id": 2,
+      "position": 1,
+      "description": "Enter the actual session end in the microscope facility's local time, when known."
+    },
+    "Microscope": {
+      "type": "items",
+      "value": "",
+      "group_id": 1,
+      "position": 1,
+      "required": true,
+      "description": "Select the one TEM microscope resource used for this session."
+    },
+    "start_time": {
+      "type": "datetime-local",
+      "value": "",
+      "group_id": 2,
+      "position": 0,
+      "required": true,
+      "description": "Enter the actual session start in the microscope facility's local time."
+    },
+    "Other_notes": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 7,
+      "description": "Record any other information relevant to the session."
+    },
+    "Contamination": {
+      "type": "radio",
+      "value": "NA",
+      "options": [
+        "NA",
+        "Yes",
+        "No"
+      ],
+      "group_id": 2,
+      "position": 4,
+      "description": "Was the sample contaminating?"
+    },
+    "Plasma Cleaning": {
+      "type": "select",
+      "value": [
+        "NA"
+      ],
+      "options": [
+        "NA",
+        "No",
+        "Sample",
+        "Holder"
+      ],
+      "group_id": 2,
+      "position": 5,
+      "allow_multi_values": true
+    },
+    "Technical_issues": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 6,
+      "description": "Report here any issues encountered during the session."
+    },
+    "experiment_description": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 2,
+      "required": false,
+      "description": "Describe the goal of the session, the question to answer, and any areas of interest agreed with the sample owner. Use the notebook body for free annotations during the session."
+    }
+  }
+}

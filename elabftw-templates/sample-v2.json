@@ -1,0 +1,140 @@
+{
+  "elabftw": {
+    "extra_fields_groups": [
+      {
+        "id": 1,
+        "name": "Specimen"
+      },
+      {
+        "id": 2,
+        "name": "Materials"
+      },
+      {
+        "id": 3,
+        "name": "Preparation"
+      },
+      {
+        "id": 4,
+        "name": "Provenance"
+      },
+      {
+        "id": 5,
+        "name": "Reception and storage"
+      }
+    ]
+  },
+  "extra_fields": {
+    "Method": {
+      "type": "select",
+      "value": "",
+      "options": [
+        "NA",
+        "FIB Lamella",
+        "Milling (cross)",
+        "Milling (plan)",
+        "Particles (drop)"
+      ],
+      "group_id": 3,
+      "position": 0,
+      "description": "Sample preparation method"
+    },
+    "thickness": {
+      "type": "text",
+      "value": "",
+      "group_id": 1,
+      "position": 2,
+      "required": false,
+      "description": "Measured specimen thickness with a unit, such as 40 nm."
+    },
+    "atom_types": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 1,
+      "required": false,
+      "description": "Optional. Enter comma-separated element symbols only when a component formula is unknown or incomplete. The exporter derives the element list from the formulas recorded in Materials."
+    },
+    "identifier": {
+      "type": "text",
+      "value": "",
+      "group_id": 4,
+      "position": 1,
+      "required": true,
+      "description": "Enter the original sample identifier provided by the sample owner. The export also records the specimen's persistent eLabFTW identifier separately."
+    },
+    "physical_form": {
+      "type": "select",
+      "value": "",
+      "options": [
+        "bulk",
+        "foil",
+        "thin_film",
+        "powder"
+      ],
+      "group_id": 1,
+      "position": 0,
+      "description": "Physical form of the measured specimen. For example, choose foil for a thin TEM lamella. Record the specimen carrier in Support."
+    },
+    "Reception_date": {
+      "type": "date",
+      "value": "",
+      "group_id": 5,
+      "position": 0,
+      "description": "Date of sample arrival (if prepared at a different institution and shipped)"
+    },
+    "Sample_storage": {
+      "type": "text",
+      "value": "",
+      "group_id": 5,
+      "position": 1,
+      "required": false,
+      "description": "Box or location where the sample is stored"
+    },
+    "Sample_provider": {
+      "type": "text",
+      "value": "",
+      "group_id": 4,
+      "position": 0,
+      "required": true,
+      "description": "Origin of the sample or reference person"
+    },
+    "chemical_formula": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 0,
+      "description": "For a single material, enter its formula here, for example Fe3Sn2. For a layered or composite specimen, leave this field blank and add one Text field per component in Materials. Use the component name as the field name and its chemical formula as the value, for example Substrate with Al2O3."
+    },
+    "preparation_date": {
+      "type": "datetime-local",
+      "value": "",
+      "group_id": 3,
+      "position": 1,
+      "required": true,
+      "description": "Enter when sample preparation ended in the facility's local time."
+    },
+    "identifier_parent": {
+      "type": "items",
+      "value": "",
+      "group_id": 4,
+      "position": 2,
+      "required": false,
+      "description": "Select the eLabFTW resource for the parent specimen, such as the wafer a lamella was cut from."
+    },
+    "substrate_formula": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 2,
+      "description": "Example component field showing how to record a material in the Materials group. Enter the substrate formula here when applicable, for example Al2O3. For another component, add a Text field named [component_name]_formula in Materials and enter its chemical formula."
+    },
+    "substrate_space_group": {
+      "type": "text",
+      "value": "",
+      "group_id": 2,
+      "position": 3,
+      "required": false,
+      "description": "Optional crystallographic space group of the substrate. Use a Hermann–Mauguin symbol when known. For other components, add a Text field named [component_name]_space_group in Materials. Use the same prefix as [component_name]_formula, as in substrate_formula and substrate_space_group."
+    }
+  }
+}

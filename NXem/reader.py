@@ -5,6 +5,7 @@ import re
 from pynxtools_em.reader import EMReader
 
 
+EVENT_PATH = re.compile(r"/ENTRY\[[^\]]+\]/measurement/eventID\[[^\]]+\](?=/)")
 STAGE_FIELD = re.compile(
     r"(/ENTRY\[[^\]]+\])/measurement/eventID\[[^\]]+\]"
     r"/instrument/stageID\[[^\]]+\]/(?:design|tilt1|tilt2|position)"
@@ -12,15 +13,33 @@ STAGE_FIELD = re.compile(
 
 
 class MatCommonEMReader(EMReader):
-    """Supply the agreed stage rotation default before NXem validation."""
+    """Add eLabFTW context and the agreed stage rotation default before validation."""
 
     def read(
         self, template, file_paths, *, sample_atom_types=None, substrate_formula=None,
         sample_components=(), sample_physical_form=None, sample_support=None,
-        sample_parent_identifier=None, **kwargs
+        sample_parent_identifier=None, experiment_identifier=None, sample_identifier=None,
+        sample_owner_identifier=None, link_event_to_sample=False, **kwargs
     ):
         data = super().read(template=template, file_paths=file_paths, **kwargs)
-        sample = "/ENTRY[entry1]/sampleID[sample]"
+        entry = "/ENTRY[entry1]"
+        sample = f"{entry}/sampleID[sample]"
+        if experiment_identifier:
+            data[f"{entry}/identifier_experiment"] = experiment_identifier
+        if sample_identifier:
+            data[f"{sample}/identifier_sample"] = sample_identifier
+            data[f"{sample}/identifier_sample/@type"] = "eLabFTW elabid"
+            data[f"{sample}/identifier_sample/@type_custom"] = True
+            if link_event_to_sample:
+                events = {match.group() for path in data if (match := EVENT_PATH.match(path))}
+                for event in events:
+                    field = f"{event}/identifier_sample"
+                    if not data.get(field):
+                        data[field] = sample_identifier
+        if sample_owner_identifier:
+            data[f"{sample}/identifierNAME[identifier_owner]"] = sample_owner_identifier
+            data[f"{sample}/identifierNAME[identifier_owner]/@type"] = "sample owner identifier"
+            data[f"{sample}/identifierNAME[identifier_owner]/@type_custom"] = True
         if sample_atom_types:
             data[f"{sample}/atom_types"] = sample_atom_types
         if substrate_formula:
