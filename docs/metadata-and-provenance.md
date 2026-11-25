@@ -23,6 +23,6 @@ The prototype writes zero degrees for an unreported stage rotation and records t
 
 ## Analysis provenance in NOMAD
 
-The pilot publishes no entries. Its optional upload creates a processed entry for one NXem derivative inside an existing unpublished upload. An integration with NOMAD Actions could preserve a reference to the original file and its checksum, record converter and definition versions, and publish a `workflow2` graph that links inputs, steps and outputs. The Action, dashboard, and downstream analyses are outside the current repository.
+The intended Materials Commons workflow collects all acquisition data and associated metadata for a session and uploads the complete dataset to NOMAD. The current single-image pilot tests that same route and publishes no entries. Its optional upload creates a processed entry for one NXem derivative inside an existing unpublished upload. An integration with NOMAD Actions could preserve a reference to the original file and its checksum, record converter and definition versions, and publish a `workflow2` graph that links inputs, steps and outputs. The Action, dashboard, and downstream analyses are outside the current repository.
 
 [FAIRmat NXem definition](https://fairmat-nfdi.github.io/nexus_definitions/classes/applications/NXem.html) · [Standalone EM conversion](https://fairmat-nfdi.github.io/pynxtools-em/tutorial/standalone.html)

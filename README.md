@@ -1,6 +1,6 @@
 # TEM Provenance
 
-An eLabFTW-to-NXem prototype for tracing TEM acquisitions back to sample reception. Start with the numeric ID of a TEM session in eLabFTW. The workstation exporter resolves the linked specimen and microscope, combines notebook metadata with one Velox image, and writes a NeXus file for NOMAD.
+A Materials Commons eLabFTW-to-NXem prototype for tracing TEM acquisitions back to sample reception. Start with the numeric ID of a TEM session in eLabFTW. The workstation exporter resolves the linked specimen and microscope, combines notebook metadata with one Velox image, and writes a NeXus file for NOMAD. The intended workflow uses that same session ID and metadata to collect every acquisition and upload the complete session dataset to NOMAD.
 
 ## What the lab records
 
@@ -39,4 +39,4 @@ Set `nomad.base_url` to the deployment's API URL ending in `/api/v1`, set `nomad
 
 One Velox image was converted to NXem and processed in an unpublished NOMAD Central test upload. The exporter also checks locally for a single 2D signal. Run with `--strict` to require validation success. The pinned reader currently emits three undocumented profiling fields that can cause strict validation to fail. See [FAIRmat follow-ups](FAIRMAT-ISSUES.md).
 
-Folder-wide export, spectra, automatic image-to-layer assignment and integration with a NOMAD Action are follow-up work. A future Action can call the headless conversion step and keep analysis inputs, parameters and outputs linked in the NOMAD workflow.
+The full-session workflow will collect all acquisition data and associated metadata from the session folder, including images and spectra, and upload the complete dataset to NOMAD. The single-image test exercises that pipeline on one input. A future NOMAD Action can call the headless conversion step and link analysis inputs, parameters and outputs. Automatic image-to-layer assignment remains a separate follow-up.
